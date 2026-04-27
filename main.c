@@ -19,13 +19,7 @@ int main(int argc, char *argv[]) {
         }
     } else if(argc == 3) {
         if(strcmp(argv[1], "runscript") == 0) {
-            FILE *script_file = fopen(argv[2], "r");
-
-            if(script_file == NULL) {
-                panic("File '%s' does not exist.", argv[2]);
-            }
-
-            fclose(script_file);
+            runscript(argv[2]);
         } else {
             panic("Incorrect usage of command line arguments.");
         }
@@ -48,4 +42,16 @@ void panic(char *message, ...) {
     fprintf(stderr, "\n");
     va_end(args);
     exit(1);
+}
+
+void runscript(char *file_path) {
+    printf("Running script: %s\n", file_path);
+
+    FILE *script_file = fopen(file_path, "r");
+
+    if(script_file == NULL) {
+        panic("File '%s' does not exist.", file_path);
+    }
+
+    fclose(script_file);
 }

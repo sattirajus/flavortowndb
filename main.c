@@ -15,7 +15,13 @@ int main(int argc, char *argv[]) {
         if(strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
             show_help_message(argv[0]);
         } else {
-            panic("Unknown command: %s", argv[1]);
+            panic("Incorrect usage of command line arguments.");
+        }
+    } else if(argc == 3) {
+        if(strcmp(argv[1], "runscript") == 0) {
+            // Process the runscript command with the provided file path
+        } else {
+            panic("Incorrect usage of command line arguments.");
         }
     } else {
         panic("Too many arguments.");
@@ -28,7 +34,7 @@ void show_help_message(char *executable_name) {
     printf("  -h, --help    Show this help message and exit\n");
 }
 
-void panic(const char *message, ...) {
+void panic(char *message, ...) {
     va_list args;
     va_start(args, message);
     fprintf(stderr, "Error: ");

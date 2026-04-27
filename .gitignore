@@ -1,0 +1,52 @@
+# Compiled object files
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+main
+
+# Debug symbols
+*.dSYM/
+*.su
+*.gch
+*.pch
+
+# Dependency files
+*.d
+
+# Build directories
+build/
+dist/
+bin/
+obj/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.vscode-workspaceFolder
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# OS specific
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.tmp
+*.log

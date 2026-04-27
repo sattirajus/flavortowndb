@@ -19,7 +19,13 @@ int main(int argc, char *argv[]) {
         }
     } else if(argc == 3) {
         if(strcmp(argv[1], "runscript") == 0) {
-            // Process the runscript command with the provided file path
+            FILE *script_file = fopen(argv[2], "r");
+
+            if(script_file == NULL) {
+                panic("File '%s' does not exist.", argv[2]);
+            }
+
+            fclose(script_file);
         } else {
             panic("Incorrect usage of command line arguments.");
         }

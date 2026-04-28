@@ -53,6 +53,7 @@ void open_log_file(void) {
     logger.log_file = open_file(LOG_FILE_PATH, "a");
 }
 
+// Requires the caller to close the file after use.
 FILE *open_file(char *file_path, char *mode) {
     struct stat file_stats;
 

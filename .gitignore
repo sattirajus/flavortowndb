@@ -50,3 +50,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+
+# flavortowndb files
+db_log.txt

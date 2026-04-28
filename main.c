@@ -5,6 +5,8 @@
 #include "main.h"
 
 int main(int argc, char *argv[]) {
+    open_log_file();
+
     if(argc == 0) {
         panic("argc is 0.");
     }
@@ -26,6 +28,8 @@ int main(int argc, char *argv[]) {
     } else {
         panic("Too many arguments.");
     }
+
+    fclose(logger.log_file);
 }
 
 void show_help_message(char *executable_name) {
@@ -37,15 +41,19 @@ void show_help_message(char *executable_name) {
 void panic(char *message, ...) {
     va_list args;
     va_start(args, message);
-    fprintf(stderr, "Error: ");
+
+    log_to_file(LOG_LEVEL_ERROR, message, args);
     vfprintf(stderr, message, args);
-    fprintf(stderr, "\n");
+    printf("\n");
+
     va_end(args);
+
+    fclose(logger.log_file);
     exit(1);
 }
 
 void runscript(char *file_path) {
-    printf("Running script: %s\n", file_path);
+    log_to_file(LOG_LEVEL_INFO, "Running script: %s", file_path);
 
     FILE *script_file = fopen(file_path, "r");
 
@@ -54,4 +62,38 @@ void runscript(char *file_path) {
     }
 
     fclose(script_file);
+}
+
+void log_to_file(enum LogLevel level, char *message, ...) {
+    va_list args;
+    va_start(args, message);
+
+    switch (level) {
+        case LOG_LEVEL_INFO:
+            fprintf(logger.log_file, "[INFO] ");
+            break;
+        case LOG_LEVEL_WARNING:
+            fprintf(logger.log_file, "[WARNING] ");
+            break;
+        case LOG_LEVEL_ERROR:
+            fprintf(logger.log_file, "[ERROR] ");
+            break;
+        default:
+            panic("Invalid log level.");
+    }
+
+    vfprintf(logger.log_file, message, args);
+    fprintf(logger.log_file, "\n");
+
+    fflush(logger.log_file);
+
+    va_end(args);
+}
+
+void open_log_file() {
+    logger.log_file = fopen(LOG_FILE_PATH, "a");
+
+    if(logger.log_file == NULL) {
+        panic("Could not open log file '%s' for appending.", LOG_FILE_PATH);
+    }
 }

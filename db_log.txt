@@ -1,0 +1,7 @@
+[INFO] Running script: database_script
+[INFO] Running script: database_script
+[INFO] Running script: database_script
+[INFO] Running script: database_script
+[INFO] Running script: database_script
+[INFO] Running script: database_script
+[ERROR] Incorrect usage of command line arguments.

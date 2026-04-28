@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <sys/stat.h>
 #include "main.h"
 
 int main(int argc, char *argv[]) {
@@ -42,9 +43,11 @@ void panic(char *message, ...) {
     va_list args;
     va_start(args, message);
 
-    log_to_file(LOG_LEVEL_ERROR, message, args);
-    vfprintf(stderr, message, args);
-    printf("\n");
+    char log_message[MAX_LOG_MESSAGE_LENGTH];
+    vsprintf(log_message, message, args);
+
+    log_to_file(LOG_LEVEL_ERROR, log_message);
+    printf("%s\n", log_message);
 
     va_end(args);
 
@@ -53,13 +56,9 @@ void panic(char *message, ...) {
 }
 
 void runscript(char *file_path) {
+    FILE *script_file = open_file(file_path, "r");
+
     log_to_file(LOG_LEVEL_INFO, "Running script: %s", file_path);
-
-    FILE *script_file = fopen(file_path, "r");
-
-    if(script_file == NULL) {
-        panic("File '%s' does not exist.", file_path);
-    }
 
     fclose(script_file);
 }
@@ -91,9 +90,21 @@ void log_to_file(enum LogLevel level, char *message, ...) {
 }
 
 void open_log_file() {
-    logger.log_file = fopen(LOG_FILE_PATH, "a");
+    logger.log_file = open_file(LOG_FILE_PATH, "a");
+}
 
-    if(logger.log_file == NULL) {
-        panic("Could not open log file '%s' for appending.", LOG_FILE_PATH);
+FILE *open_file(char *file_path, char *mode) {
+    struct stat file_stats;
+
+    if(stat(file_path, &file_stats) != 0) {
+        panic("File '%s' does not exist.", file_path);
     }
+
+    FILE *file = fopen(file_path, mode);
+
+    if(file == NULL) {
+        panic("Could not open file '%s' with mode '%s'.", file_path, mode);
+    }
+
+    return file;
 }

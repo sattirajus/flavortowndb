@@ -22,6 +22,5 @@ extern struct Logger logger;
 void panic(char *message, ...);
 void log_to_file(enum LogLevel level, char *message, ...);
 void open_log_file(void);
-FILE *open_file(char *file_path, char *mode);
 
 #endif

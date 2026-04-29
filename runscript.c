@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "logging.h"
+#include "file_io.h"
 #include "runscript.h"
 
 void runscript(char *file_path) {
@@ -20,12 +21,4 @@ void runscript(char *file_path) {
 
     free(script);
     fclose(script_file);
-}
-
-long file_size(FILE *file) {
-    fseek(file, 0, SEEK_END);
-    long size = ftell(file);
-    fseek(file, 0, SEEK_SET);
-
-    return size;
 }

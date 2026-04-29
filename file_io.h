@@ -5,5 +5,6 @@
 
 FILE *open_file(char *file_path, char *mode);
 long file_size(FILE *file);
+char *read_file_to_string(FILE *file);
 
 #endif

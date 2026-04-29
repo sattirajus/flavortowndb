@@ -9,15 +9,9 @@ void runscript(char *file_path) {
 
     log_to_file(LOG_LEVEL_INFO, "Running script: %s", file_path);
 
-    long script_length = file_size(script_file);
+    char *script = read_file_to_string(script_file);
 
-    char *script = malloc(script_length + 1);
-    if (!script) {
-        panic("Failed to allocate memory for script.");
-    }
-
-    long bytes_read = fread(script, 1, script_length, script_file);
-    script[bytes_read] = '\0';
+    printf("Script content:\n%s\n", script);
 
     free(script);
     fclose(script_file);

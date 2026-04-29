@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 #include "file_io.h"
 #include "logging.h"
 
@@ -26,4 +27,19 @@ long file_size(FILE *file) {
     fseek(file, 0, SEEK_SET);
 
     return size;
+}
+
+// Requires the caller to free the returned string after use.
+char *read_file_to_string(FILE *file) {
+    long size = file_size(file);
+    char *buffer = malloc(size + 1);
+
+    if (buffer == NULL) {
+        panic("Failed to allocate memory for file buffer.");
+    }
+
+    fread(buffer, 1, size, file);
+    buffer[size] = '\0';
+
+    return buffer;
 }
